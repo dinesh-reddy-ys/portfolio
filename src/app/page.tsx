@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Hash, Edit, Upload } from "lucide-react";
+import { Github, Hash, Edit, Upload, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
