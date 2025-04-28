@@ -1,13 +1,13 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+  apiKey: "AIzaSyCbAW2pKisI8pooq-DKNK1wI0wn7J0Xyko",
+  authDomain: "persona-portfolio-840qh.firebaseapp.com",
+  projectId: "persona-portfolio-840qh",
+  storageBucket: "persona-portfolio-840qh.firebasestorage.app",
+  messagingSenderId: "211614553507",
+  appId: "1:211614553507:web:44ffeccbdcc8b015423616",
+  measurementId: "G-6HD7MHEK4H"
 };
 
 // Initialize Firebase
