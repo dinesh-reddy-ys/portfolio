@@ -55,13 +55,17 @@ export const EditModeDialog: React.FC<EditModeDialogProps> = ({ isEditing, setIs
               onChange={(e) => setPassword(e.target.value)}
             />
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => {
-                setOpen(false);
-                setPassword('');
-              }}>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={(e) => {
-                e.preventDefault();
-                checkPasswordAndEnableEdit(password, setIsEditing, setOpen);
+              <AlertDialogCancel
+                onClick={() => {
+                  setOpen(false);
+                  setPassword("");
+                }}
+              >
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={(event) => {
+                  event.preventDefault()
+                  checkPasswordAndEnableEdit(password, setIsEditing, setOpen);
               }}>
                 Submit
               </AlertDialogAction>

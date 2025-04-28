@@ -39,24 +39,28 @@ export function ProfileSection({ initialProfile, isEditing, onProfileChange }: P
           priority
           className="rounded-full"
         />
-        {isEditing && (
-          <>
-            <Button
-              onClick={() => triggerImageUpload(imageInputRef)}
-              variant="secondary"
-              size="icon"
-            >
-              <Upload className="h-4 w-4" />
-            </Button>
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleImageUpload(e, setTempProfile)}
-              className="hidden"
-              ref={imageInputRef}
-            />
-          </>
-        )}
+        <div className="flex items-center gap-4">
+          {isEditing && (
+            <>
+              <Button
+                onClick={() => triggerImageUpload(imageInputRef)}
+                variant="secondary"
+                size="icon"
+              >
+                <Upload className="h-4 w-4" />
+              </Button>
+            </>
+          )}
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageUpload(e, setTempProfile)}
+            className="hidden"
+            ref={imageInputRef}
+          />
+        </div>
+
+        
         <div>
           {isEditing ? (
             <Input

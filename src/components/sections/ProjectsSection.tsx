@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,41 +10,15 @@ type Project = {
 };
 
 interface ProjectsSectionProps {
-  isEditing: boolean;
+    isEditing: boolean;
+    tempProjects: Project[];
+    setTempProjects: Dispatch<SetStateAction<Project[]>>;
+    handleProjectChange: (index: number, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handleAddProject: () => void;
+    handleRemoveProject: (index: number) => void;
 }
 
-export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ isEditing }) => {
-  const [tempProjects, setTempProjects] = useState<Project[]>([
-    {
-      title: "Automated Testing Framework",
-      description:
-        "Developed a comprehensive testing framework using Selenium and Python, reducing testing time by 40%.",
-    },
-    {
-      title: "CI/CD Pipeline Implementation",
-      description:
-        "Implemented a CI/CD pipeline with Jenkins and Docker, enabling faster and more reliable software releases.",
-    },
-  ]);
-
-  const handleProjectChange = (index: number, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    if (name === 'title' || name === 'description') {
-      const updatedProjects = [...tempProjects];
-      updatedProjects[index][name] = value;
-      setTempProjects(updatedProjects);
-    }
-  };
-
-  const handleAddProject = () => {
-    setTempProjects((prev) => [...prev, { title: "", description: "" }]);
-  };
-
-  const handleRemoveProject = (index: number) => {
-    const updatedProjects = [...tempProjects];
-    updatedProjects.splice(index, 1);
-    setTempProjects(updatedProjects);
-  };
+export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ isEditing, tempProjects, setTempProjects, handleProjectChange, handleAddProject, handleRemoveProject }) => {
 
   return (
     <section className="fade-in mb-8">

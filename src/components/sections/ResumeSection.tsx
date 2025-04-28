@@ -33,7 +33,7 @@ export function ResumeSection({ isEditing, tempProfile, setTempProfile }: Resume
       {isEditing && (
         <>
           <Button
-            onClick={() => triggerResumeUpload(resumeInputRef[0])}
+            onClick={() => triggerResumeUpload(resumeInputRef.current)}
             variant="secondary"
             size="icon"
             className="mb-2"

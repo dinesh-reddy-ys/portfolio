@@ -2,36 +2,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
-type SkillsSectionProps = {
+interface SkillsSectionProps {
   isEditing: boolean;
-};
+  tempSkills: string[];
+  setTempSkills: Dispatch<SetStateAction<string[]>>;
+  handleSkillChange: (index: number, e: any) => void;
+  handleAddSkill: () => void;
+  handleRemoveSkill: (index: number) => void;
+}
 
-const SkillsSection = ({ isEditing }: SkillsSectionProps) => {
-  const [tempSkills, setTempSkills] = useState<string[]>([
-    "Selenium",
-    "Python",
-    "Jenkins",
-    "Docker",
-    "CI/CD",
-  ]);
+const SkillsSection = ({ isEditing, tempSkills, setTempSkills, handleSkillChange, handleAddSkill, handleRemoveSkill }: SkillsSectionProps) => {
 
-  const handleSkillChange = (index: number, e: any) => {
-    const { value } = e.target;
-    const updatedSkills = [...tempSkills];
-    updatedSkills[index] = value;
-    setTempSkills(updatedSkills);
-  };
-
-  const handleAddSkill = () => {
-    setTempSkills((prev) => [...prev, ""]);
-  };
-
-  const handleRemoveSkill = (index: number) => {
-    const updatedSkills = [...tempSkills];
-    updatedSkills.splice(index, 1);
-    setTempSkills(updatedSkills);
-  };
 
   return (
     <section className="fade-in mb-8">
