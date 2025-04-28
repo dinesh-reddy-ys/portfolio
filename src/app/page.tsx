@@ -1,9 +1,9 @@
 "use client";
 
-import { Github, Hash, Edit } from "lucide-react";
+import { Github, Hash, Edit, Upload } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -45,6 +45,9 @@ export default function Home() {
   const [tempProfile, setTempProfile] = useState(profileData);
   const [tempProjects, setTempProjects] = useState(projectData);
 
+  // Ref for the image input
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
   const handleProfileChange = (e: any) => {
     const { name, value } = e.target;
     setTempProfile((prev) => ({ ...prev, [name]: value }));
@@ -67,6 +70,21 @@ export default function Home() {
     setProjects(tempProjects);
     setIsEditing(false);
     alert("Changes Saved!"); // Simple feedback
+  };
+
+  const handleImageUpload = (e: any) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setTempProfile((prev) => ({ ...prev, profileImage: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerImageUpload = () => {
+    imageInputRef.current?.click();
   };
 
   return (
@@ -99,6 +117,24 @@ export default function Home() {
             height={100}
             className="rounded-full"
           />
+          {isEditing && (
+            <>
+              <Button
+                onClick={triggerImageUpload}
+                variant="secondary"
+                size="icon"
+              >
+                <Upload className="h-4 w-4" />
+              </Button>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                ref={imageInputRef}
+              />
+            </>
+          )}
           <div>
             {isEditing ? (
               <Input
