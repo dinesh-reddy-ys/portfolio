@@ -38,16 +38,27 @@ export default function Home() {
   const [profile, setProfile] = useState(profileData);
   const [projects, setProjects] = useState(projectData);
 
+  // State for temporary profile and project changes
+  const [tempProfile, setTempProfile] = useState(profileData);
+  const [tempProjects, setTempProjects] = useState(projectData);
+
   const handleProfileChange = (e: any) => {
     const { name, value } = e.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
+    setTempProfile((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleProjectChange = (index: number, e: any) => {
     const { name, value } = e.target;
-    const updatedProjects = [...projects];
+    const updatedProjects = [...tempProjects];
     updatedProjects[index][name] = value;
-    setProjects(updatedProjects);
+    setTempProjects(updatedProjects);
+  };
+
+  const handleSave = () => {
+    // Apply temporary changes to the original state
+    setProfile(tempProfile);
+    setProjects(tempProjects);
+    alert("Changes Saved!"); // Simple feedback
   };
 
   return (
@@ -56,7 +67,7 @@ export default function Home() {
       <section className="fade-in mb-8">
         <div className="flex items-center gap-4">
           <Image
-            src={profile.profileImage}
+            src={tempProfile.profileImage}
             alt="Profile"
             width={100}
             height={100}
@@ -66,14 +77,14 @@ export default function Home() {
             <input
               type="text"
               name="name"
-              value={profile.name}
+              value={tempProfile.name}
               onChange={handleProfileChange}
               className="text-2xl font-bold w-full"
             />
             <input
               type="text"
               name="title"
-              value={profile.title}
+              value={tempProfile.title}
               onChange={handleProfileChange}
               className="text-gray-600 w-full"
             />
@@ -82,13 +93,13 @@ export default function Home() {
         <input
           type="text"
           name="about"
-          value={profile.about}
+          value={tempProfile.about}
           onChange={handleProfileChange}
           className="mt-4 w-full"
         />
         <div className="mt-4 flex items-center gap-4">
           <Link
-            href={profile.github}
+            href={tempProfile.github}
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent hover:underline flex items-center gap-1"
@@ -97,7 +108,7 @@ export default function Home() {
             GitHub
           </Link>
           <Link
-            href={profile.hashnode}
+            href={tempProfile.hashnode}
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent hover:underline flex items-center gap-1"
@@ -111,7 +122,7 @@ export default function Home() {
       {/* Projects Section */}
       <section className="fade-in mb-8">
         <h2 className="text-xl font-bold mb-4">Projects</h2>
-        {projects.map((project, index) => (
+        {tempProjects.map((project, index) => (
           <div key={index} className="mb-4 p-4 border rounded-md">
             <input
               type="text"
@@ -159,13 +170,19 @@ export default function Home() {
       <section className="fade-in">
         <h2 className="text-xl font-bold mb-4">Resume</h2>
         <Link
-          href={profile.resume}
+          href={tempProfile.resume}
           download
           className="bg-accent text-white py-2 px-4 rounded hover:bg-teal-700"
         >
           Download Resume
         </Link>
       </section>
+      <button
+        onClick={handleSave}
+        className="bg-primary text-white py-2 px-4 rounded hover:bg-blue-700"
+      >
+        Save Changes
+      </button>
     </div>
   );
 }
