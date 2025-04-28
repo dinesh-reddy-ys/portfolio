@@ -3,8 +3,9 @@
 import { Github, Hash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
-const profile = {
+const profileData = {
   name: "John Doe",
   title: "Automation Engineer",
   about:
@@ -15,7 +16,7 @@ const profile = {
   profileImage: "https://picsum.photos/200/200", // Placeholder image
 };
 
-const projects = [
+const projectData = [
   {
     title: "Automated Testing Framework",
     description:
@@ -34,6 +35,21 @@ const projects = [
 ];
 
 export default function Home() {
+  const [profile, setProfile] = useState(profileData);
+  const [projects, setProjects] = useState(projectData);
+
+  const handleProfileChange = (e: any) => {
+    const { name, value } = e.target;
+    setProfile((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleProjectChange = (index: number, e: any) => {
+    const { name, value } = e.target;
+    const updatedProjects = [...projects];
+    updatedProjects[index][name] = value;
+    setProjects(updatedProjects);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Profile Section */}
@@ -47,11 +63,29 @@ export default function Home() {
             className="rounded-full"
           />
           <div>
-            <h1 className="text-2xl font-bold">{profile.name}</h1>
-            <p className="text-gray-600">{profile.title}</p>
+            <input
+              type="text"
+              name="name"
+              value={profile.name}
+              onChange={handleProfileChange}
+              className="text-2xl font-bold w-full"
+            />
+            <input
+              type="text"
+              name="title"
+              value={profile.title}
+              onChange={handleProfileChange}
+              className="text-gray-600 w-full"
+            />
           </div>
         </div>
-        <p className="mt-4">{profile.about}</p>
+        <input
+          type="text"
+          name="about"
+          value={profile.about}
+          onChange={handleProfileChange}
+          className="mt-4 w-full"
+        />
         <div className="mt-4 flex items-center gap-4">
           <Link
             href={profile.github}
@@ -79,8 +113,20 @@ export default function Home() {
         <h2 className="text-xl font-bold mb-4">Projects</h2>
         {projects.map((project, index) => (
           <div key={index} className="mb-4 p-4 border rounded-md">
-            <h3 className="font-semibold">{project.title}</h3>
-            <p className="text-gray-700">{project.description}</p>
+            <input
+              type="text"
+              name="title"
+              value={project.title}
+              onChange={(e) => handleProjectChange(index, e)}
+              className="font-semibold w-full"
+            />
+            <input
+              type="text"
+              name="description"
+              value={project.description}
+              onChange={(e) => handleProjectChange(index, e)}
+              className="text-gray-700 w-full"
+            />
             <div className="mt-2 flex items-center gap-4">
               {project.github && (
                 <Link
