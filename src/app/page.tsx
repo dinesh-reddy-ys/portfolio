@@ -19,6 +19,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
 
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { app } from '../lib/firebase';
+
 const profileData = {
   name: "John Doe",
   title: "Automation Engineer",
@@ -139,15 +142,30 @@ export default function Home() {
     imageInputRef.current?.click();
   };
 
-  const handleResumeUpload = (e: any) => {
+  const handleResumeUpload = async (e: any) => {
     const file = e.target.files?.[0];
     if (file) {
-      // In a real application, you would upload the file to a server
-      // and store the path to the resume.
-      // For this example, we'll just store the file name.
-      setTempProfile((prev) => ({ ...prev, resume: file.name }));
+      // Upload the file to Firebase Storage
+      const storage = getStorage(app);
+      const storageRef = ref(storage, 'resumes/' + file.name);
+
+      try {
+        await uploadBytes(storageRef, file);
+
+        // Get the download URL
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log('Download URL:', downloadURL);
+
+        // Store the download URL in the state
+        setTempProfile((prev) => ({ ...prev, resume: downloadURL }));
+        alert("Resume Uploaded Successfully!");
+      } catch (error) {
+        console.error("Error uploading resume:", error);
+        alert("Failed to upload resume.");
+      }
     }
   };
+
 
   const triggerResumeUpload = () => {
     resumeInputRef.current?.click();
