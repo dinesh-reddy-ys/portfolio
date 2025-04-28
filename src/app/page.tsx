@@ -6,6 +6,17 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const profileData = {
   name: "John Doe",
@@ -40,6 +51,8 @@ export default function Home() {
   const [profile, setProfile] = useState(profileData);
   const [projects, setProjects] = useState(projectData);
   const [isEditing, setIsEditing] = useState(false);
+  const [open, setOpen] = useState(false); // State for the AlertDialog
+  const [password, setPassword] = useState(""); // State for the password input
 
   // State for temporary profile and project changes
   const [tempProfile, setTempProfile] = useState(profileData);
@@ -61,7 +74,7 @@ export default function Home() {
   };
 
   const handleEditClick = () => {
-    setIsEditing(true);
+    setOpen(true); // Open the AlertDialog
   };
 
   const handleSave = () => {
@@ -87,17 +100,53 @@ export default function Home() {
     imageInputRef.current?.click();
   };
 
+  const checkPasswordAndEnableEdit = () => {
+    if (password === "1129") {
+      setIsEditing(true);
+      setOpen(false); // Close the AlertDialog
+    } else {
+      alert("Incorrect password");
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-end mb-4">
         {!isEditing ? (
-          <Button
-            onClick={handleEditClick}
-            className="bg-accent text-white py-2 px-4 rounded hover:bg-teal-700"
-          >
-            <Edit className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
+          <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogTrigger asChild>
+              <Button
+                onClick={handleEditClick}
+                className="bg-accent text-white py-2 px-4 rounded hover:bg-teal-700"
+              >
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Enter Password</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Enter the correct password to enable edit mode.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => {
+                  setOpen(false);
+                  setPassword('');
+                }}>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={checkPasswordAndEnableEdit}>
+                  Submit
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         ) : (
           <Button
             onClick={handleSave}
