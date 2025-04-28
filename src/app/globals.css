@@ -3,25 +3,21 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer base {
   :root {
-    --background: 225 33% 12%;
+    --background: 225 33% 12%; /* Dark blue */
     --foreground: 0 0% 98%;
     --card: 240 5.3% 10%;
     --card-foreground: 0 0% 98%;
     --popover: 240 5.3% 10%;
     --popover-foreground: 0 0% 98%;
-    --primary: 225 63.2% 17.6%;
+    --primary: 225 63.2% 17.6%; /* Dark blue */
     --primary-foreground: 0 0% 98%;
-    --secondary: 225 23% 22%;
+    --secondary: 225 23% 22%; /* Light gray */
     --secondary-foreground: 0 0% 98%;
     --muted: 225 23% 22%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 173 59% 38%;
+    --accent: 173 59% 38%; /* Teal */
     --accent-foreground: 0 0% 0%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
@@ -44,19 +40,19 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 225 33% 12%;
+    --background: 225 33% 12%; /* Dark blue */
     --foreground: 0 0% 98%;
     --card: 240 5.3% 10%;
     --card-foreground: 0 0% 98%;
     --popover: 240 5.3% 10%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
-    --primary-foreground: 225 63.2% 17.6%;
-    --secondary: 225 23% 22%;
+    --primary-foreground: 225 63.2% 17.6%; /* Dark blue */
+    --secondary: 225 23% 22%; /* Light gray */
     --secondary-foreground: 0 0% 98%;
     --muted: 225 23% 22%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 173 59% 38%;
+    --accent: 173 59% 38%; /* Teal */
     --accent-foreground: 0 0% 0%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
@@ -87,6 +83,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-
-    
