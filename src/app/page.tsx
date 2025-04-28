@@ -4,6 +4,8 @@ import { Github, Hash, Edit } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const profileData = {
   name: "John Doe",
@@ -69,22 +71,22 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-       <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-4">
         {!isEditing ? (
-          <button
+          <Button
             onClick={handleEditClick}
             className="bg-accent text-white py-2 px-4 rounded hover:bg-teal-700"
           >
             <Edit className="h-4 w-4 mr-2" />
             Edit
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             onClick={handleSave}
             className="bg-primary text-white py-2 px-4 rounded hover:bg-blue-700"
           >
             Save Changes
-          </button>
+          </Button>
         )}
       </div>
       {/* Profile Section */}
@@ -99,7 +101,7 @@ export default function Home() {
           />
           <div>
             {isEditing ? (
-              <input
+              <Input
                 type="text"
                 name="name"
                 value={tempProfile.name}
@@ -110,7 +112,7 @@ export default function Home() {
               <div className="text-2xl font-bold">{profile.name}</div>
             )}
             {isEditing ? (
-              <input
+              <Input
                 type="text"
                 name="title"
                 value={tempProfile.title}
@@ -123,7 +125,7 @@ export default function Home() {
           </div>
         </div>
         {isEditing ? (
-          <input
+          <Input
             type="text"
             name="about"
             value={tempProfile.about}
@@ -161,7 +163,7 @@ export default function Home() {
         {tempProjects.map((project, index) => (
           <div key={index} className="mb-4 p-4 border rounded-md">
             {isEditing ? (
-              <input
+              <Input
                 type="text"
                 name="title"
                 value={project.title}
@@ -172,7 +174,7 @@ export default function Home() {
               <div className="font-semibold">{project.title}</div>
             )}
             {isEditing ? (
-              <input
+              <Input
                 type="text"
                 name="description"
                 value={project.description}
@@ -224,3 +226,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
