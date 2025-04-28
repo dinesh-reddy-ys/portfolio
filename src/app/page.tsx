@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Hash, Edit, Upload, X } from "lucide-react";
+import { Github, Edit, Upload, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
@@ -24,7 +24,6 @@ const profileData = {
   about:
     "A passionate automation engineer dedicated to creating efficient and reliable systems. I specialize in streamlining processes and enhancing productivity through innovative solutions.",
   github: "https://github.com/johndoe",
-  hashnode: "https://hashnode.com/@johndoe",
   resume: "/resume.pdf", // Path to your resume file in the public directory
   profileImage: "https://picsum.photos/200/200", // Placeholder image
 };
@@ -44,14 +43,12 @@ const projectData = [
     description:
       "Developed a comprehensive testing framework using Selenium and Python, reducing testing time by 40%.",
     github: "https://github.com/johndoe/testing-framework",
-    hashnode: null,
   },
   {
     title: "CI/CD Pipeline Implementation",
     description:
       "Implemented a CI/CD pipeline with Jenkins and Docker, enabling faster and more reliable software releases.",
     github: null,
-    hashnode: "https://hashnode.com/post/cicd-pipeline-example",
   },
   // Add more projects as needed
 ];
@@ -277,15 +274,6 @@ export default function Home() {
             <Github className="h-5 w-5" />
             GitHub
           </Link>
-          <Link
-            href={tempProfile.hashnode}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:underline flex items-center gap-1"
-          >
-            <Hash className="h-5 w-5" />
-            Hashnode
-          </Link>
         </div>
       </section>
 
@@ -365,17 +353,6 @@ export default function Home() {
                   GitHub
                 </Link>
               )}
-              {project.hashnode && (
-                <Link
-                  href={project.hashnode}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-accent hover:underline flex items-center gap-1"
-                >
-                  <Hash className="h-4 w-4" />
-                  Hashnode
-                </Link>
-              )}
             </div>
           </div>
         ))}
@@ -414,3 +391,4 @@ export default function Home() {
     </div>
   );
 }
+
