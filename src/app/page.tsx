@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Hash } from "lucide-react";
+import { Github, Hash, Edit } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -37,6 +37,7 @@ const projectData = [
 export default function Home() {
   const [profile, setProfile] = useState(profileData);
   const [projects, setProjects] = useState(projectData);
+  const [isEditing, setIsEditing] = useState(false);
 
   // State for temporary profile and project changes
   const [tempProfile, setTempProfile] = useState(profileData);
@@ -54,15 +55,38 @@ export default function Home() {
     setTempProjects(updatedProjects);
   };
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
   const handleSave = () => {
     // Apply temporary changes to the original state
     setProfile(tempProfile);
     setProjects(tempProjects);
+    setIsEditing(false);
     alert("Changes Saved!"); // Simple feedback
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
+       <div className="flex justify-end mb-4">
+        {!isEditing ? (
+          <button
+            onClick={handleEditClick}
+            className="bg-accent text-white py-2 px-4 rounded hover:bg-teal-700"
+          >
+            <Edit className="h-4 w-4 mr-2" />
+            Edit
+          </button>
+        ) : (
+          <button
+            onClick={handleSave}
+            className="bg-primary text-white py-2 px-4 rounded hover:bg-blue-700"
+          >
+            Save Changes
+          </button>
+        )}
+      </div>
       {/* Profile Section */}
       <section className="fade-in mb-8">
         <div className="flex items-center gap-4">
@@ -74,29 +98,41 @@ export default function Home() {
             className="rounded-full"
           />
           <div>
-            <input
-              type="text"
-              name="name"
-              value={tempProfile.name}
-              onChange={handleProfileChange}
-              className="text-2xl font-bold w-full"
-            />
-            <input
-              type="text"
-              name="title"
-              value={tempProfile.title}
-              onChange={handleProfileChange}
-              className="text-gray-600 w-full"
-            />
+            {isEditing ? (
+              <input
+                type="text"
+                name="name"
+                value={tempProfile.name}
+                onChange={handleProfileChange}
+                className="text-2xl font-bold w-full"
+              />
+            ) : (
+              <div className="text-2xl font-bold">{profile.name}</div>
+            )}
+            {isEditing ? (
+              <input
+                type="text"
+                name="title"
+                value={tempProfile.title}
+                onChange={handleProfileChange}
+                className="text-gray-600 w-full"
+              />
+            ) : (
+              <div className="text-gray-600">{profile.title}</div>
+            )}
           </div>
         </div>
-        <input
-          type="text"
-          name="about"
-          value={tempProfile.about}
-          onChange={handleProfileChange}
-          className="mt-4 w-full"
-        />
+        {isEditing ? (
+          <input
+            type="text"
+            name="about"
+            value={tempProfile.about}
+            onChange={handleProfileChange}
+            className="mt-4 w-full"
+          />
+        ) : (
+          <p className="mt-4">{profile.about}</p>
+        )}
         <div className="mt-4 flex items-center gap-4">
           <Link
             href={tempProfile.github}
@@ -124,20 +160,28 @@ export default function Home() {
         <h2 className="text-xl font-bold mb-4">Projects</h2>
         {tempProjects.map((project, index) => (
           <div key={index} className="mb-4 p-4 border rounded-md">
-            <input
-              type="text"
-              name="title"
-              value={project.title}
-              onChange={(e) => handleProjectChange(index, e)}
-              className="font-semibold w-full"
-            />
-            <input
-              type="text"
-              name="description"
-              value={project.description}
-              onChange={(e) => handleProjectChange(index, e)}
-              className="text-gray-700 w-full"
-            />
+            {isEditing ? (
+              <input
+                type="text"
+                name="title"
+                value={project.title}
+                onChange={(e) => handleProjectChange(index, e)}
+                className="font-semibold w-full"
+              />
+            ) : (
+              <div className="font-semibold">{project.title}</div>
+            )}
+            {isEditing ? (
+              <input
+                type="text"
+                name="description"
+                value={project.description}
+                onChange={(e) => handleProjectChange(index, e)}
+                className="text-gray-700 w-full"
+              />
+            ) : (
+              <div className="text-gray-700">{project.description}</div>
+            )}
             <div className="mt-2 flex items-center gap-4">
               {project.github && (
                 <Link
@@ -177,12 +221,6 @@ export default function Home() {
           Download Resume
         </Link>
       </section>
-      <button
-        onClick={handleSave}
-        className="bg-primary text-white py-2 px-4 rounded hover:bg-blue-700"
-      >
-        Save Changes
-      </button>
     </div>
   );
 }
