@@ -162,6 +162,22 @@ export default function Home() {
     }
   };
 
+  const handleDownloadResume = () => {
+    // Create a link element
+    const link = document.createElement('a');
+    link.href = tempProfile.resume;
+    link.download = 'resume.pdf'; // You can set the filename here
+
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Trigger the download
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-end mb-4">
@@ -378,15 +394,13 @@ export default function Home() {
             />
           </>
         )}
-        <Link
-          href={tempProfile.resume}
-          download
+        <Button
+          onClick={handleDownloadResume}
           className="bg-accent text-white py-2 px-4 rounded hover:bg-teal-700"
         >
           Download Resume
-        </Link>
+        </Button>
       </section>
     </div>
   );
 }
-
