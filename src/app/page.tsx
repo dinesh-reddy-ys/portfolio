@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 const profileData = {
   name: "John Doe",
@@ -42,13 +43,11 @@ const projectData = [
     title: "Automated Testing Framework",
     description:
       "Developed a comprehensive testing framework using Selenium and Python, reducing testing time by 40%.",
-    github: "https://github.com/johndoe/testing-framework",
   },
   {
     title: "CI/CD Pipeline Implementation",
     description:
       "Implemented a CI/CD pipeline with Jenkins and Docker, enabling faster and more reliable software releases.",
-    github: null,
   },
   // Add more projects as needed
 ];
@@ -99,6 +98,16 @@ export default function Home() {
     const { name, value } = e.target;
     const updatedProjects = [...tempProjects];
     updatedProjects[index][name] = value;
+    setTempProjects(updatedProjects);
+  };
+
+  const handleAddProject = () => {
+    setTempProjects((prev) => [...prev, { title: "", description: "" }]);
+  };
+
+  const handleRemoveProject = (index: number) => {
+    const updatedProjects = [...tempProjects];
+    updatedProjects.splice(index, 1);
     setTempProjects(updatedProjects);
   };
 
@@ -254,8 +263,7 @@ export default function Home() {
           </div>
         </div>
         {isEditing ? (
-          <Input
-            type="text"
+          <Textarea
             name="about"
             value={tempProfile.about}
             onChange={handleProfileChange}
@@ -321,8 +329,7 @@ export default function Home() {
               <div className="font-semibold">{project.title}</div>
             )}
             {isEditing ? (
-              <Input
-                type="text"
+              <Textarea
                 name="description"
                 value={project.description}
                 onChange={(e) => handleProjectChange(index, e)}
@@ -331,9 +338,22 @@ export default function Home() {
             ) : (
               <div className="text-gray-700">{project.description}</div>
             )}
-            
+             {isEditing && (
+                <Button
+                  onClick={() => handleRemoveProject(index)}
+                  variant="outline"
+                  size="icon"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
           </div>
         ))}
+         {isEditing && (
+            <Button onClick={handleAddProject} variant="secondary">
+              Add Project
+            </Button>
+          )}
       </section>
 
       {/* Resume Section */}
@@ -369,5 +389,4 @@ export default function Home() {
     </div>
   );
 }
-
 
