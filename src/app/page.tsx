@@ -264,17 +264,7 @@ export default function Home() {
         ) : (
           <p className="mt-4">{profile.about}</p>
         )}
-        <div className="mt-4 flex items-center gap-4">
-          <Link
-            href={tempProfile.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:underline flex items-center gap-1"
-          >
-            <Github className="h-5 w-5" />
-            GitHub
-          </Link>
-        </div>
+        
       </section>
 
       {/* Skills Section */}
@@ -341,19 +331,7 @@ export default function Home() {
             ) : (
               <div className="text-gray-700">{project.description}</div>
             )}
-            <div className="mt-2 flex items-center gap-4">
-              {project.github && (
-                <Link
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-accent hover:underline flex items-center gap-1"
-                >
-                  <Github className="h-4 w-4" />
-                  GitHub
-                </Link>
-              )}
-            </div>
+            
           </div>
         ))}
       </section>
@@ -391,4 +369,5 @@ export default function Home() {
     </div>
   );
 }
+
 
