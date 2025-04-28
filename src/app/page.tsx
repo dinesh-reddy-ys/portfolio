@@ -18,8 +18,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress"; // Import the Progress component
 
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { app } from '../lib/firebase';
 
 const profileData = {
@@ -73,6 +75,12 @@ export default function Home() {
 
   // Ref for the resume input
   const resumeInputRef = useRef<HTMLInputElement>(null);
+
+   // State to store the resume upload progress
+   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+
+   // State to store the uploaded resume filename
+   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
 
   const handleProfileChange = (e: any) => {
@@ -145,24 +153,44 @@ export default function Home() {
   const handleResumeUpload = async (e: any) => {
     const file = e.target.files?.[0];
     if (file) {
+       // Set the filename
+       setUploadedFileName(file.name);
+
       // Upload the file to Firebase Storage
       const storage = getStorage(app);
       const storageRef = ref(storage, 'resumes/' + file.name);
 
-      try {
-        await uploadBytes(storageRef, file);
+      // Upload file and metadata
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-        // Get the download URL
-        const downloadURL = await getDownloadURL(storageRef);
-        console.log('Download URL:', downloadURL);
-
-        // Store the download URL in the state
-        setTempProfile((prev) => ({ ...prev, resume: downloadURL }));
-        alert("Resume Uploaded Successfully!");
-      } catch (error) {
-        console.error("Error uploading resume:", error);
-        alert("Failed to upload resume.");
-      }
+      uploadTask.on('state_changed',
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume:
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          setUploadProgress(progress);
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.error("Error uploading resume:", error);
+          setUploadProgress(null);
+          setUploadedFileName(null);
+          alert("Failed to upload resume.");
+        },
+        () => {
+          // Handle successful uploads on complete
+          // Get download URL
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at', downloadURL);
+            // Store the download URL in the state
+            setTempProfile((prev) => ({ ...prev, resume: downloadURL }));
+             // Reset upload progress
+             setUploadProgress(null);
+            alert("Resume Uploaded Successfully!");
+          });
+        }
+      );
     }
   };
 
@@ -410,6 +438,17 @@ export default function Home() {
               className="hidden"
               ref={resumeInputRef}
             />
+             {/* Display upload progress */}
+             {uploadProgress !== null && (
+              <Progress value={uploadProgress} className="mb-2" />
+            )}
+
+            {/* Display uploaded filename */}
+            {uploadedFileName && (
+              <p className="text-sm text-muted-foreground">
+                Uploaded: {uploadedFileName}
+              </p>
+            )}
           </>
         )}
         <Button
