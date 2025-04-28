@@ -29,6 +29,15 @@ const profileData = {
   profileImage: "https://picsum.photos/200/200", // Placeholder image
 };
 
+const skillsData = [
+  "Selenium",
+  "Python",
+  "Jenkins",
+  "Docker",
+  "CI/CD",
+  // Add more skills as needed
+];
+
 const projectData = [
   {
     title: "Automated Testing Framework",
@@ -49,6 +58,7 @@ const projectData = [
 
 export default function Home() {
   const [profile, setProfile] = useState(profileData);
+  const [skills, setSkills] = useState(skillsData);
   const [projects, setProjects] = useState(projectData);
   const [isEditing, setIsEditing] = useState(false);
   const [open, setOpen] = useState(false); // State for the AlertDialog
@@ -56,6 +66,7 @@ export default function Home() {
 
   // State for temporary profile and project changes
   const [tempProfile, setTempProfile] = useState(profileData);
+  const [tempSkills, setTempSkills] = useState(skillsData);
   const [tempProjects, setTempProjects] = useState(projectData);
 
   // Ref for the image input
@@ -68,6 +79,23 @@ export default function Home() {
   const handleProfileChange = (e: any) => {
     const { name, value } = e.target;
     setTempProfile((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSkillChange = (index: number, e: any) => {
+    const { value } = e.target;
+    const updatedSkills = [...tempSkills];
+    updatedSkills[index] = value;
+    setTempSkills(updatedSkills);
+  };
+
+  const handleAddSkill = () => {
+    setTempSkills((prev) => [...prev, ""]);
+  };
+
+  const handleRemoveSkill = (index: number) => {
+    const updatedSkills = [...tempSkills];
+    updatedSkills.splice(index, 1);
+    setTempSkills(updatedSkills);
   };
 
   const handleProjectChange = (index: number, e: any) => {
@@ -84,6 +112,7 @@ export default function Home() {
   const handleSave = () => {
     // Apply temporary changes to the original state
     setProfile(tempProfile);
+    setSkills(tempSkills);
     setProjects(tempProjects);
     setIsEditing(false);
     alert("Changes Saved!"); // Simple feedback
@@ -260,6 +289,43 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Skills Section */}
+      <section className="fade-in mb-8">
+        <h2 className="text-xl font-bold mb-4">Skills</h2>
+        <div className="flex flex-wrap gap-2">
+          {tempSkills.map((skill, index) => (
+            <div key={index} className="flex items-center">
+              {isEditing ? (
+                <Input
+                  type="text"
+                  value={skill}
+                  onChange={(e) => handleSkillChange(index, e)}
+                  className="mr-2 w-32"
+                />
+              ) : (
+                <div className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground">
+                  {skill}
+                </div>
+              )}
+              {isEditing && (
+                <Button
+                  onClick={() => handleRemoveSkill(index)}
+                  variant="outline"
+                  size="icon"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          ))}
+          {isEditing && (
+            <Button onClick={handleAddSkill} variant="secondary">
+              Add Skill
+            </Button>
+          )}
+        </div>
+      </section>
+
       {/* Projects Section */}
       <section className="fade-in mb-8">
         <h2 className="text-xl font-bold mb-4">Projects</h2>
@@ -348,4 +414,3 @@ export default function Home() {
     </div>
   );
 }
-
