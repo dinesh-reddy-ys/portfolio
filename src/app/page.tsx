@@ -61,6 +61,10 @@ export default function Home() {
   // Ref for the image input
   const imageInputRef = useRef<HTMLInputElement>(null);
 
+  // Ref for the resume input
+  const resumeInputRef = useRef<HTMLInputElement>(null);
+
+
   const handleProfileChange = (e: any) => {
     const { name, value } = e.target;
     setTempProfile((prev) => ({ ...prev, [name]: value }));
@@ -98,6 +102,20 @@ export default function Home() {
 
   const triggerImageUpload = () => {
     imageInputRef.current?.click();
+  };
+
+  const handleResumeUpload = (e: any) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // In a real application, you would upload the file to a server
+      // and store the path to the resume.
+      // For this example, we'll just store the file name.
+      setTempProfile((prev) => ({ ...prev, resume: file.name }));
+    }
+  };
+
+  const triggerResumeUpload = () => {
+    resumeInputRef.current?.click();
   };
 
   const checkPasswordAndEnableEdit = () => {
@@ -300,6 +318,25 @@ export default function Home() {
       {/* Resume Section */}
       <section className="fade-in">
         <h2 className="text-xl font-bold mb-4">Resume</h2>
+        {isEditing && (
+          <>
+            <Button
+              onClick={triggerResumeUpload}
+              variant="secondary"
+              size="icon"
+              className="mb-2"
+            >
+              <Upload className="h-4 w-4" />
+            </Button>
+            <Input
+              type="file"
+              accept=".pdf"
+              onChange={handleResumeUpload}
+              className="hidden"
+              ref={resumeInputRef}
+            />
+          </>
+        )}
         <Link
           href={tempProfile.resume}
           download
