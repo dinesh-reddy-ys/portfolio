@@ -25,9 +25,9 @@ interface ProfileSectionProps {
 
 export function ProfileSection({ initialProfile, isEditing, onProfileChange }: ProfileSectionProps) {
   const [tempProfile, setTempProfile] = useState<Profile>(initialProfile);
-    // Ref for the image input
+  // Ref for the image input
   const imageInputRef = useRef<HTMLInputElement>(null);
-  
+
   return (
     <section className="fade-in mb-8">
       <div className="flex items-center gap-4">
@@ -60,7 +60,7 @@ export function ProfileSection({ initialProfile, isEditing, onProfileChange }: P
           />
         </div>
 
-        
+
         <div>
           {isEditing ? (
             <Input
@@ -71,7 +71,7 @@ export function ProfileSection({ initialProfile, isEditing, onProfileChange }: P
               className="text-2xl font-bold w-full"
             />
           ) : (
-            <div className="text-2xl font-bold">{initialProfile.name}</div>
+            <div className="text-2xl font-bold">{tempProfile.name}</div>
           )}
           {isEditing ? (
             <Input
@@ -82,7 +82,7 @@ export function ProfileSection({ initialProfile, isEditing, onProfileChange }: P
               className="text-gray-600 w-full"
             />
           ) : (
-            <div className="text-gray-600">{initialProfile.title}</div>
+            <div className="text-gray-600">{tempProfile.title}</div>
           )}
         </div>
       </div>
@@ -94,7 +94,7 @@ export function ProfileSection({ initialProfile, isEditing, onProfileChange }: P
           className="mt-4 w-full"
         />
       ) : (
-        <p className="mt-4">{initialProfile.about}</p>
+        <p className="mt-4">{tempProfile.about}</p>
       )}
     </section>
   );
