@@ -1,7 +1,7 @@
 "use client";
 
 import { Upload } from "lucide-react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { useState, useRef, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,11 +20,14 @@ interface Profile {
 interface ProfileSectionProps {
   initialProfile: Profile;
   isEditing: boolean;
-  onProfileChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onProfileChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 }
 
-export function ProfileSection({ initialProfile, isEditing, onProfileChange }: ProfileSectionProps) {
-  const [tempProfile, setTempProfile] = useState<Profile>(initialProfile);
+export function ProfileSection({
+  initialProfile, isEditing, onProfileChange
+}: ProfileSectionProps) { const [tempProfile, setTempProfile] = useState<Profile>(initialProfile);
   // Ref for the image input
   const imageInputRef = useRef<HTMLInputElement>(null);
 
@@ -34,6 +37,7 @@ export function ProfileSection({ initialProfile, isEditing, onProfileChange }: P
         <Image
           src={tempProfile.profileImage}
           alt="Profile"
+          suppressHydrationWarning={true}
           width={100}
           height={100}
           priority
@@ -68,6 +72,7 @@ export function ProfileSection({ initialProfile, isEditing, onProfileChange }: P
               name="name"
               value={tempProfile.name}
               onChange={onProfileChange}
+              placeholder="Add name..."
               className="text-2xl font-bold w-full"
             />
           ) : (
@@ -79,6 +84,7 @@ export function ProfileSection({ initialProfile, isEditing, onProfileChange }: P
               name="title"
               value={tempProfile.title}
               onChange={onProfileChange}
+              placeholder="Add title..."
               className="text-gray-600 w-full"
             />
           ) : (
@@ -91,6 +97,7 @@ export function ProfileSection({ initialProfile, isEditing, onProfileChange }: P
           name="about"
           value={tempProfile.about}
           onChange={onProfileChange}
+          placeholder="Add description..."
           className="mt-4 w-full"
         />
       ) : (

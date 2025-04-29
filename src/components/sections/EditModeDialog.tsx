@@ -32,13 +32,14 @@ export const EditModeDialog: React.FC<EditModeDialogProps> = ({ isEditing, setIs
         <AlertDialog open={open} onOpenChange={setOpen}>
           <AlertDialogTrigger asChild>
             <Button
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
+                setPassword("");
                 setOpen(true);
               }}
               className="bg-accent text-white py-2 px-4 rounded hover:bg-teal-700"
             >
-              <Edit className="h-4 w-4 mr-2" />
-              Edit
+              <Edit className="h-4 w-4 mr-2" /> Edit
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
@@ -51,6 +52,7 @@ export const EditModeDialog: React.FC<EditModeDialogProps> = ({ isEditing, setIs
             <Input
               type="password"
               placeholder="Password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -62,9 +64,10 @@ export const EditModeDialog: React.FC<EditModeDialogProps> = ({ isEditing, setIs
                 }}
               >
                 Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction onClick={(event) => {
-                  event.preventDefault()
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={(event) => {
+                    event.preventDefault();
                   checkPasswordAndEnableEdit(password, setIsEditing, setOpen);
               }}>
                 Submit
