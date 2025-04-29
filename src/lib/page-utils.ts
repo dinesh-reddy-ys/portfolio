@@ -1,4 +1,17 @@
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";import { ChangeEvent, useState } from "react";
+
+/**
+ * Represents the structure of a project with a title and description.
+ */
+type Project = {
+  title: string;
+  description: string;
+};
+
+
+/**
+ * Represents the structure of a profile with basic information.
+ */
 
 /**
  * Checks if the provided password is correct, and if so, enables edit mode.
@@ -123,6 +136,87 @@ const triggerResumeUpload = (resumeInputRef: any) => {
   resumeInputRef?.click();
 };
 
+/**
+ * Handles the change event for project fields (title or description).
+ * @param index - The index of the project in the array.
+ * @param e - The change event object.
+ * @param tempProjects - The current array of projects.
+ * @param setTempProjects - The state setter to update the projects array.
+ */
+const handleProjectChange = (index: number, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,tempProjects: Project[],setTempProjects: (arg0: any) => void) => {
+  const { name, value } = e.target;
+  if (name === 'title' || name === 'description') {
+      const updatedProjects = [...tempProjects];
+      updatedProjects[index][name] = value;
+      setTempProjects(updatedProjects);
+  }
+};
+
+/**
+ * Adds a new empty project to the projects array.
+ * @param tempProjects - The current array of projects.
+ * @param setTempProjects - The state setter to update the projects array.
+ */
+const handleAddProject = (tempProjects:Project[], setTempProjects: (arg0: any) => void) => {
+  setTempProjects((prev:any) => [...prev, { title: "", description: "" }]);
+};
+
+/**
+ * Removes a project at the specified index from the projects array.
+ * @param index - The index of the project to remove.
+ * @param tempProjects - The current array of projects.
+ * @param setTempProjects - The state setter to update the projects array.
+ */
+const handleRemoveProject = (index: number,tempProjects: Project[],setTempProjects: (arg0: any) => void) => {
+  const updatedProjects = [...tempProjects];
+  updatedProjects.splice(index, 1);
+  setTempProjects(updatedProjects);
+};
+
+/**
+ * Handles the change event for skill fields.
+ * @param index - The index of the skill in the array.
+ * @param e - The change event object.
+ * @param tempSkills - The current array of skills.
+ * @param setTempSkills - The state setter to update the skills array.
+ */
+const handleSkillChange = (index: number, e: any, tempSkills: string[], setTempSkills: (arg0: any) => void) => {
+  const { value } = e.target;
+  const updatedSkills = [...tempSkills];
+  updatedSkills[index] = value;
+  setTempSkills(updatedSkills);
+};
+
+/**
+ * Adds a new empty skill to the skills array.
+ * @param tempSkills - The current array of skills.
+ * @param setTempSkills - The state setter to update the skills array.
+ */
+const handleAddSkill = (tempSkills:string[], setTempSkills:(arg0: any) => void) => {
+  setTempSkills((prev:any) => [...prev, ""]);
+};
+/**
+ * Removes a skill at the specified index from the skills array.
+ * @param index - The index of the skill to remove.
+ * @param tempSkills - The current array of skills.
+ * @param setTempSkills - The state setter to update the skills array.
+ */
+const handleRemoveSkill = (index: number,tempSkills:string[],setTempSkills:(arg0: any) => void) => {
+  const updatedSkills = [...tempSkills];
+    updatedSkills.splice(index, 1);
+    setTempSkills(updatedSkills);
+};
+
+
+const handleEditClick = (setOpen:any) => {
+  setOpen(true); // Open the AlertDialog
+};
+
+const handleSave = (setIsEditing:any) => {
+  setIsEditing(false);
+  alert("Changes Saved!"); 
+};
+
 const handleDownloadResume = () => { };
 
 export {
@@ -131,5 +225,13 @@ export {
   handleResumeUpload,
   triggerImageUpload,
   triggerResumeUpload,
+  handleSkillChange,
+  handleAddSkill,
+  handleRemoveSkill,
+  handleProjectChange,
+  handleAddProject,
+  handleRemoveProject,
+  handleEditClick,
+  handleSave,
   handleDownloadResume,
 };

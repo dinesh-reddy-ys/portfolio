@@ -8,7 +8,7 @@ interface SkillsSectionProps {
   isEditing: boolean;
   tempSkills: string[];
   setTempSkills: Dispatch<SetStateAction<string[]>>;
-  handleSkillChange: (index: number, e: any) => void;
+  handleSkillChange: (index: number, e: any, tempSkills: string[], setTempSkills: Dispatch<SetStateAction<string[]>>) => void;
   handleAddSkill: () => void;
   handleRemoveSkill: (index: number) => void;
 }
@@ -26,7 +26,7 @@ const SkillsSection = ({ isEditing, tempSkills, setTempSkills, handleSkillChange
               <Input
                 type="text"
                 value={skill}
-                onChange={(e) => handleSkillChange(index, e)}
+                onChange={(e) => handleSkillChange(index, e, tempSkills, setTempSkills)}
                 className="mr-2 w-32"
               />
             ) : (

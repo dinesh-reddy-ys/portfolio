@@ -1,30 +1,18 @@
 "use client";
 
-import { useState, useRef, ChangeEvent } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ProfileSection } from "@/components/sections/ProfileSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ResumeSection } from "@/components/sections/ResumeSection";
 import { EditModeDialog } from "@/components/sections/EditModeDialog";
-import { Edit, Upload, X } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { handleImageUpload, handleResumeUpload, checkPasswordAndEnableEdit, triggerImageUpload, handleDownloadResume, triggerResumeUpload } from "@/lib/page-utils";
-import { app } from "@/lib/firebase";
-import { Progress } from "@/components/ui/progress";
-import Image from "next/image";
+
+import { handleAddSkill, handleRemoveSkill, handleSkillChange, 
+  handleProjectChange, handleAddProject, handleRemoveProject,
+  handleSave} from "@/lib/page-utils";
+
+
 
 export const profileData = {
   name: "John Doe",
@@ -71,55 +59,31 @@ export default function Home() {
   const [tempProjects, setTempProjects] = useState<Project[]>(projectData);
   const [open, setOpen] = useState(false); // For the AlertDialog
 
-
-
-
-  const handleAddSkill = () => {
-    setTempSkills((prev) => [...prev, ""]);
+  const handleAddSkillFn = () => {
+    handleAddSkill(tempSkills, setTempSkills);
+  };
+  const handleRemoveSkillFn = (index: number) => {
+    handleRemoveSkill(index, tempSkills, setTempSkills);
   };
 
-  const handleRemoveSkill = (index: number) => {
-    const updatedSkills = [...tempSkills];
-    updatedSkills.splice(index, 1);
-    setTempSkills(updatedSkills);
+  const handleSkillChangeFn = (index: number, e: any) => {
+    handleSkillChange(index, e, tempSkills, setTempSkills);
   };
 
-  const handleSkillChange = (index: number, e: any) => {
-    const { value } = e.target;
-    const updatedSkills = [...tempSkills];
-    updatedSkills[index] = value;
-    setTempSkills(updatedSkills);
+  const handleProjectChangeFn = (index: number, e: any) => {
+    handleProjectChange(index, e, tempProjects, setTempProjects);
   };
-
-  const handleProjectChange = (index: number, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const { name, value } = e.target;
-      if (name === 'title' || name === 'description') {
-          const updatedProjects = [...tempProjects];
-          updatedProjects[index][name] = value;
-          setTempProjects(updatedProjects);
-      }
+  const handleAddProjectFn = () => {
+    handleAddProject(tempProjects, setTempProjects);
   };
-
-  const handleAddProject = () => {
-    setTempProjects((prev) => [...prev, { title: "", description: "" }]);
+  const handleRemoveProjectFn = (index: number) => {
+    handleRemoveProject(index, tempProjects, setTempProjects);
   };
-
-  const handleRemoveProject = (index: number) => {
-    const updatedProjects = [...tempProjects];
-    updatedProjects.splice(index, 1);
-    setTempProjects(updatedProjects);
-  };
-
-  const handleEditClick = () => {
-    setOpen(true); // Open the AlertDialog
-  };
-
-  const handleSave = () => {
-    setIsEditing(false);
-    alert("Changes Saved!"); 
-  };
-
-
+  
+    const onSave = () => {
+        handleSave(setIsEditing);
+      };
+  
 
 
 
@@ -130,7 +94,7 @@ export default function Home() {
         <EditModeDialog isEditing={isEditing} setIsEditing={setIsEditing} />
           {isEditing && (
           <Button
-            onClick={handleSave}
+            onClick={onSave}
             className="bg-primary text-white py-2 px-4 rounded hover:bg-blue-700"
           >
             Save Changes
@@ -141,8 +105,8 @@ export default function Home() {
         const { name, value } = e.target;
         setTempProfile((prev) => ({ ...prev, [name]: value }));
       }} />
-       <SkillsSection isEditing={isEditing} tempSkills={tempSkills} setTempSkills={setTempSkills} handleSkillChange={handleSkillChange} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />
-        <ProjectsSection isEditing={isEditing} tempProjects={tempProjects} setTempProjects={setTempProjects} handleProjectChange={handleProjectChange} handleAddProject={handleAddProject} handleRemoveProject={handleRemoveProject} />
+       <SkillsSection isEditing={isEditing} tempSkills={tempSkills} setTempSkills={setTempSkills} handleSkillChange={handleSkillChangeFn} handleAddSkill={handleAddSkillFn} handleRemoveSkill={handleRemoveSkillFn} />
+        <ProjectsSection isEditing={isEditing} tempProjects={tempProjects} setTempProjects={setTempProjects} handleProjectChange={handleProjectChangeFn} handleAddProject={handleAddProjectFn} handleRemoveProject={handleRemoveProjectFn} />
         <ResumeSection isEditing={isEditing} tempProfile={tempProfile} setTempProfile={setTempProfile} />
     </div>
   );
